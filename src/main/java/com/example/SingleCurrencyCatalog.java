@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class SingleCurrencyCatalog implements Catalog {
-    private final Date date;
+    private final Date date; // TODO: Purpose? Is it for offers?
     private final Map<Product, Double> priceMap;
     private final String currency;
 
@@ -36,11 +36,11 @@ public class SingleCurrencyCatalog implements Catalog {
 
         Price totalPrice = Price.zero();
         for (ProductEntry entry : productEntries) {
-            Product product = entry.product;
+            Product product = entry.product();
             Optional<Price> priceOptional = this.getPrice(product);
 
             if (priceOptional.isEmpty()) return Optional.empty();
-            Price totalProductPrice = priceOptional.get().multiply(entry.amount);
+            Price totalProductPrice = priceOptional.get().multiply(entry.amount());
             totalPrice = totalProductPrice.add(totalPrice);
         }
 

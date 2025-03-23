@@ -1,8 +1,10 @@
 package com.example;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Cart {
     HashMap<Product, Integer> products = new HashMap<>();
@@ -24,7 +26,7 @@ public class Cart {
     }
 
     public void addAllProductEntries(ProductEntry... productEntries) {
-        Arrays.stream(productEntries).forEach(entry -> addProduct(entry.product, entry.amount));
+        Arrays.stream(productEntries).forEach(entry -> addProduct(entry.product(), entry.amount()));
     }
 
     public boolean contains(Product aProduct) {

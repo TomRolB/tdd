@@ -103,7 +103,7 @@ public class CartTest {
     }
 
     @Test
-    public void CartShouldListItsProducts() {
+    public void CartShouldListProducts_010() {
         throw new RuntimeException("Not tested yet");
     }
 }

@@ -1,6 +1,8 @@
 package com.example;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Cart {
     HashMap<Product, Integer> products = new HashMap<>();
@@ -34,22 +36,12 @@ public class Cart {
         return amount != null;
     }
 
-    public double getTotalPrice() {
-        return products.entrySet().stream()
-                .mapToDouble(Cart::getTotalPriceOfEntry)
-                .sum()
-        ;
-    }
+    public Optional<Price> getTotalPrice(SingleCurrencyCatalog catalog) {
+        List<ProductEntry> productEntries = products.entrySet().stream()
+                .map(entry -> new ProductEntry(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
 
-    private static double getTotalPriceOfEntry(Map.Entry<Product, Integer> entry) {
-        double price = entry.getKey().price();
-        Integer amount = entry.getValue();
-        return round(price * amount, 2);
-    }
-
-    public static double round(double value, int places) {
-        double factor = Math.pow(10, places);
-        return Math.round(value * factor) / factor;
+        return catalog.getTotalPrice(productEntries);
     }
 
     public void clear() {

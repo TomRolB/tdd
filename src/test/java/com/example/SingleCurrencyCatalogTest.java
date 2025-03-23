@@ -2,6 +2,7 @@ package com.example;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
 
@@ -18,14 +19,19 @@ import static org.junit.jupiter.api.Assertions.*;
 // Manejo de ofertas (opcional): descuentos (días específicos); esto afecta a la parte de pagos
 // Trueque, multi-moneda (opcional)
 
-class CatalogTest {
+class SingleCurrencyCatalogTest {
     @Test
     public void CatalogStartsWithValidityDateAndPriceList() {
-        assertThrows(IllegalArgumentException.class, () -> new Catalog(new Date(), Map.of()));
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> new SingleCurrencyCatalog(Date.from(Instant.now()), Map.of(), "ARS")
+        );
     }
 
     @Test
-    public void CatalogKnowsProductPrice() {}
+    public void CatalogKnowsProductPrice() {
+
+    }
     @Test
     public void IfCatalogDoesNotKnowTheProductThen() {
         // Decide what to do

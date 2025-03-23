@@ -8,9 +8,4 @@ public class ProductEntry {
         this.product = product;
         this.amount = amount;
     }
-
-    public ProductEntry(String name, double price, int amount) {
-        this.product = new Product(name, price);
-        this.amount = amount;
-    }
 }

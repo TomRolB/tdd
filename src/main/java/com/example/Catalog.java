@@ -1,22 +1,10 @@
 package com.example;
 
-import java.util.Date;
-import java.util.Map;
+import java.util.List;
+import java.util.Optional;
 
-public class Catalog {
-    private final Date date;
-    private final Map<Product, Integer> priceMap;
-
-    public Catalog(Date date, Map<Product, Integer> priceMap) {
-        if (priceMap.isEmpty()) {
-            throw new IllegalArgumentException("Price map cannot be empty");
-        }
-
-        this.date = date;
-        this.priceMap = priceMap;
-    }
-
-    public boolean isEmpty() {
-        return priceMap.isEmpty();
-    }
+public interface Catalog {
+    boolean isEmpty();
+    Optional<Price> getPrice(Product product);
+    Optional<Price> getTotalPrice(List<ProductEntry> productEntries);
 }

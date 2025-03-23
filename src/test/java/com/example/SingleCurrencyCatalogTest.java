@@ -4,8 +4,11 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import static com.example.utils.InstanceProvider.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /*
@@ -21,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SingleCurrencyCatalogTest {
     @Test
-    public void CatalogStartsWithValidityDateAndPriceList() {
+    public void CatalogStartsWithValidityDateAndPriceList_001() {
         assertThrows(
             IllegalArgumentException.class,
             () -> new SingleCurrencyCatalog(Date.from(Instant.now()), Map.of(), "ARS")
@@ -29,11 +32,42 @@ class SingleCurrencyCatalogTest {
     }
 
     @Test
-    public void CatalogKnowsProductPrice() {
+    public void CatalogKnowsProductPrice_002() {
+        Optional<Price> price = priceMapCatalog.getPrice(aProduct);
 
+        assertTrue(price.isPresent());
+        assertEquals(new Price("ARS", 12.0), price.get());
     }
+
     @Test
-    public void IfCatalogDoesNotKnowTheProductThen() {
-        // Decide what to do
+    public void IfCatalogDoesNotKnowTheProductThenOptionalEmptyIsReturned_003() {
+        Optional<Price> price = priceMapCatalog.getPrice(nonCataloguedProduct);
+
+        assertFalse(price.isPresent());
+    }
+
+    @Test
+    public void CatalogComputesTotalPrice_004() {
+        Optional<Price> price = priceMapWithCentsCatalog.getTotalPrice(List.of(aProductEntry, anotherProductEntry));
+
+        assertTrue(price.isPresent());
+        assertEquals(new Price("ARS", 15.8), price.get());
+    }
+
+    @Test
+    public void CatalogReturnsZeroPriceIfAnEmptyListIsPassed_005() {
+        Optional<Price> price = priceMapWithCentsCatalog.getTotalPrice(List.of());
+
+        assertTrue(price.isPresent());
+        assertEquals(new Price("ARS", 0), price.get());
+    }
+
+    @Test
+    public void CatalogReturnsOptionalEmptyIfAnyProductIsNotCatalogued_006() {
+        Optional<Price> price = priceMapWithCentsCatalog.getTotalPrice(
+            List.of(aProductEntry, anotherProductEntry, yetAnotherProductEntry, nonCataloguedProductEntry)
+        );
+
+        assertFalse(price.isPresent());
     }
 }
